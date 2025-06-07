@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Lesson5.Data.Repositories
 {
     //בדף זה נגדיר את כל הפעולות שנרצה לבצע על ה  dbset של טיסות
@@ -35,7 +36,7 @@ namespace Lesson5.Data.Repositories
         public void RemoveFlight(int id)
         {
             var f=GetFlightById(id);
-            _dataContext.Remove(f);
+            _dataContext.Remove(f);//
             _dataContext.SaveChanges();
         }
         public void UpdateFlight(Flight flight)
