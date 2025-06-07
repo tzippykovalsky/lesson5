@@ -40,7 +40,7 @@ namespace Lesson5.Data.Repositories
         }
         public void UpdateFlight(Flight flight)
         {
-            var f = GetFlightById(flight.Id);
+            //var f = GetFlightById(flight.Id);
             _dataContext.Update(flight);
             _dataContext.SaveChanges();
         }

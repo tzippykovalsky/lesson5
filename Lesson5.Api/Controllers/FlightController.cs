@@ -32,23 +32,19 @@ namespace Lesson5.Api.Controllers
             {
                 //call the service to get the flights
                 var flights = _flightService.GetFlights();
-                //return the flights
                 return Ok(flights);
             }
             catch (ArgumentNullException ex)
             {
-                //return an error message
                 return NotFound(ex.Message);
             }
             catch (ArgumentException ex)
             {
-                //return an error message
                 return BadRequest(ex.Message);
                 
             }
             catch (Exception ex)
             {
-                //return an error message
                 return BadRequest(ex.Message);
             }
         }
@@ -68,104 +64,94 @@ namespace Lesson5.Api.Controllers
         [HttpGet("{id}")]
         public ActionResult<Flight?> Get(int id)
         {
-            //call the service to get the flight by id
             try
             {
                 var flight = _flightService.GetFlightById(id);
-                //return the flight
+                if (flight == null)
+                    return NotFound($"Flight with id {id} not found.");
                 return Ok(flight);
             }
             catch (ArgumentNullException ex)
             {
-                //return an error message
                 return NotFound(ex.Message);
             }
             catch (ArgumentException ex)
             {
-                //return an error message
                 return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                //return an error message
                 return BadRequest(ex.Message);
             }
         }
 
         // POST api/<FlightController>
         [HttpPost]
-        public void Post([FromBody] Flight value)
+        public IActionResult Post([FromBody] Flight value)
         {
             try
             {
-                //call the service to add the flight
                 _flightService.AddFlight(value);
+                // Assuming value.Id is set after add
+                return Created($"api/Flight/{value.Id}", value);
             }
             catch (ArgumentNullException ex)
             {
-                //return an error message
-                BadRequest(ex.Message);
+                return BadRequest(ex.Message);
             }
             catch (ArgumentException ex)
             {
-                //return an error message
-                BadRequest(ex.Message);
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                //return an error message
-                BadRequest(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
         // PUT api/<FlightController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Flight value)
+        public IActionResult Put(int id, [FromBody] Flight value)
         {
             try
             {
-                _flightService.UpdateFlight(value);
+                _flightService.UpdateFlight(value, id);
+                return NoContent();
             }
             catch (ArgumentNullException ex)
             {
-                //return an error message
-                BadRequest(ex.Message);
+                return BadRequest(ex.Message);
             }
             catch (ArgumentException ex)
             {
-                //return an error message
-                BadRequest(ex.Message);
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                //return an error message
-                BadRequest(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
         // DELETE api/<FlightController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
             try
             {
-                //call the service to remove the flight
                 _flightService.RemoveFlight(id);
+                return NoContent();
             }
             catch (ArgumentNullException ex)
             {
-                //return an error message
-                BadRequest(ex.Message);
+                return BadRequest(ex.Message);
             }
             catch (ArgumentException ex)
             {
-                //return an error message
-                BadRequest(ex.Message);
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                //return an error message
-                BadRequest(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
     }

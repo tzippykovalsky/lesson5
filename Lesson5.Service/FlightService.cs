@@ -37,7 +37,7 @@ namespace Lesson5.Service
                 throw new ArgumentException("מספר שעות חייב להיות בין 1 ל-24.");
 
             // בדיקה שהטייס קיים
-            var pilot = _pilotRepository.GetPilotById(int.Parse(flight.PilotId));
+            var pilot = _pilotRepository.GetPilotById(flight.PilotId);
             if (pilot == null)
                 throw new InvalidOperationException("טייס לא קיים במערכת.");
 
@@ -63,6 +63,32 @@ namespace Lesson5.Service
         {
             // אפשר להוסיף לוגיקות גם כאן כמו בבדיקה של Add
             _flightRepository.UpdateFlight(flight);
+        }
+
+        public void UpdateFlight(Flight flight, int id)
+        {
+            var existing = GetFlightById(id);
+            if (existing == null)
+                throw new KeyNotFoundException($"Flight with ID {flight.Id} does not exist.");
+
+            // עדכון שדות לפי מה שנשלח, רק אם לא null/ריק
+            if (!string.IsNullOrWhiteSpace(flight.Destination))
+                existing.Destination = flight.Destination;
+
+            if (!string.IsNullOrWhiteSpace(flight.Gate))
+                existing.Gate = flight.Gate;
+            //if (!string.IsNullOrWhiteSpace(flight.PilotId))//צריך לבדוק לפני שנותנים לעדכן קוד טייס שאכן נמצא TODO
+            //    existing.PilotId = flight.PilotId;
+
+            if (flight.Price > 0)
+                existing.Price = flight.Price;
+            if (flight.NumHours > 0)
+                existing.NumHours = flight.NumHours;
+            if (flight.Terminal > 0)
+                existing.Terminal = flight.Terminal;
+
+
+            _flightRepository.UpdateFlight(existing);
         }
     }
 }

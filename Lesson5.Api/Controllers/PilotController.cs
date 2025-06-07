@@ -44,18 +44,6 @@ namespace Lesson5.Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
-
-
-        //לא ניתן להריץ את הקוד הבא משום שיהיה 2 endpoints זהים
-        //כלומר מבחינת c# זה בסדר אך לא מבחינת הapi
-
-        //[HttpGet]
-        //public IEnumerable<string> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
-
         // GET api/<PilotController>/5
         [HttpGet("{id}")]
         public ActionResult<Pilot?> Get(int id)
@@ -145,17 +133,14 @@ namespace Lesson5.Api.Controllers
             }
             catch (ArgumentNullException ex)
             {
-                //return an error message
                 BadRequest(ex.Message);
             }
             catch (ArgumentException ex)
             {
-                //return an error message
                 BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                //return an error message
                 BadRequest(ex.Message);
             }
         }

@@ -36,7 +36,7 @@ namespace Lesson5.Service
                 throw new ArgumentException("Pilot age must be between 18 and 70.");
 
             // בדיקה אם הטייס כבר קיים לפי ת"ז
-            if (_pilotRepository.GetPilotById(pilot.Id) != null)
+            if (_pilotRepository.GetPilots().FirstOrDefault(p=>p.IdentityNumber.Equals(pilot.IdentityNumber))!=null)
                 throw new InvalidOperationException("Pilot with the same identity number already exists.");
 
             // אם הכל תקין - מוסיפים

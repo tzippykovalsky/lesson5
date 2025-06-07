@@ -3,13 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34622.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson5.Api", "Lesson5.Api.csproj", "{10AB2C1F-58CD-4D10-965F-BDE726E29A20}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lesson5.Api", "Lesson5.Api.csproj", "{10AB2C1F-58CD-4D10-965F-BDE726E29A20}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson5.Core", "..\Lesson5.Core\Lesson5.Core.csproj", "{6882BE3F-0B24-426E-B48B-226A85427E51}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lesson5.Core", "..\Lesson5.Core\Lesson5.Core.csproj", "{6882BE3F-0B24-426E-B48B-226A85427E51}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson5.Data", "..\Lesson5.Data\Lesson5.Data.csproj", "{498E1FED-A691-4219-80B1-00D2E5D25FFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lesson5.Data", "..\Lesson5.Data\Lesson5.Data.csproj", "{498E1FED-A691-4219-80B1-00D2E5D25FFA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson5.Service", "..\Lesson5.Service\Lesson5.Service.csproj", "{684E0D3E-CF59-432F-9E86-2BA605704019}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lesson5.Service", "..\Lesson5.Service\Lesson5.Service.csproj", "{684E0D3E-CF59-432F-9E86-2BA605704019}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{258EB394-90A1-43B5-89D7-86A45D9956A8}"
+	ProjectSection(SolutionItems) = preProject
+		TODO = TODO
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
