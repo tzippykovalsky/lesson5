@@ -18,7 +18,7 @@ namespace Lesson5.Core.Entities
         public int NumHours { get; set; }
         public string Destination { get; set; }
         public int PilotId { get; set; }
-        public List<Passenger> Passengers { get; set; } = new();
+        public List<Passenger>? Passengers { get; set; } = new();
 
         //תכנון המערכתת
         //טיסות לנוסעים -רבים לרבים

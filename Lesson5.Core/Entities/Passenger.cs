@@ -12,7 +12,7 @@ namespace Lesson5.Core.Entities
         public int Id { get; set; }
         public string FullName { get; set; }
         public string PassportNumber { get; set; }
-        public List<Flight> Flights { get; set; } = new();
+        public List<Flight>? Flights { get; set; } = new();
     }
 
 }
