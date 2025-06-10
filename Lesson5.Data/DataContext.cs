@@ -16,6 +16,7 @@ namespace Lesson5.Data
         }
         public DbSet<Flight> Flights { get; set; }
         public DbSet<Pilot> Pilots { get; set; }
+        public DbSet<Passenger> Passes { get; set; }
 
         //Migration זו הדרך שבה Entity Framework Core
         //יוצרת את הטבלאות במסד הנתונים לפי המחלקות (Entities) 

@@ -14,8 +14,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<PilotService>();
 builder.Services.AddScoped<FlightService>();
+builder.Services.AddScoped<PassengerService>();
 builder.Services.AddScoped<IPilotRepository,PilotRepository>();
 builder.Services.AddScoped<IFlightRepository,FlightRepository>();
+builder.Services.AddScoped<IPassengerRepository, PassengerRepository>();
+
 builder.Services.AddDbContext<DataContext>();
 
 var app = builder.Build();
