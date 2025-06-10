@@ -1,4 +1,5 @@
 ﻿using Lesson5.Core.Entities;
+using Lesson5.Core.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Lesson5.Data.Repositories
 {
-    public class PilotRepository
+    public class PilotRepository : IPilotRepository
         //בשכבה זו נבצע רק לוגיקה שקשורה למסד התנונים בלבד
     {
         private readonly DataContext _dataContext;
@@ -16,29 +17,29 @@ namespace Lesson5.Data.Repositories
             _dataContext = dataContext;
         }
 
-        public List<Pilot> GetPilots()
+        public List<Pilot> GetAll()
         {
             return _dataContext.Pilots.ToList();
         }
 
-        public Pilot? GetPilotById(int id)
+        public Pilot? GetById(int id)
         {
             return _dataContext.Pilots.FirstOrDefault(f => f.Id == id);
         }
 
-        public void AddPilot(Pilot pilot)
+        public void Add(Pilot pilot)
         {
             _dataContext.Pilots.Add(pilot);
             _dataContext.SaveChanges();
         }
 
-        public void RemovePilot(int id)
+        public void Delete(int id)
         {
-            var p = GetPilotById(id);
+            var p = GetById(id);
             _dataContext.Remove(p);
             _dataContext.SaveChanges();
         }
-        public void UpdatePilot(Pilot pilot)
+        public void Update(Pilot pilot)
         {
             _dataContext.Update(pilot);
             _dataContext.SaveChanges();

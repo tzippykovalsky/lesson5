@@ -1,4 +1,6 @@
 ﻿using Lesson5.Core.Entities;
+using Lesson5.Core.Repositories;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +11,7 @@ using System.Threading.Tasks;
 namespace Lesson5.Data.Repositories
 {
     //בדף זה נגדיר את כל הפעולות שנרצה לבצע על ה  dbset של טיסות
-    public class FlightRepository
+    public class FlightRepository : IFlightRepository
     {
         private readonly DataContext _dataContext;
         public FlightRepository(DataContext dataContext)
@@ -17,29 +19,29 @@ namespace Lesson5.Data.Repositories
             _dataContext = dataContext;
         }
 
-        public List<Flight> GetFlights()
+        public List<Flight> GetAll()
         {
             return _dataContext.Flights.ToList();
         }
 
-        public Flight? GetFlightById(int id)
+        public Flight? GetById(int id)
         {
             return _dataContext.Flights.FirstOrDefault(f => f.Id == id);
         }
 
-        public void AddFlight(Flight flight)
+        public void Add(Flight flight)
         {
             _dataContext.Flights.Add(flight);
             _dataContext.SaveChanges();
         }
 
-        public void RemoveFlight(int id)
+        public void Delete(int id)
         {
-            var f=GetFlightById(id);
+            var f=GetById(id);
             _dataContext.Remove(f);//
             _dataContext.SaveChanges();
         }
-        public void UpdateFlight(Flight flight)
+        public void Update(Flight flight)
         {
             //var f = GetFlightById(flight.Id);
             _dataContext.Update(flight);

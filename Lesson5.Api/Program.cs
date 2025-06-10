@@ -1,4 +1,5 @@
 using Lesson5.Api.Controllers;
+using Lesson5.Core.Repositories;
 using Lesson5.Data;
 using Lesson5.Data.Repositories;
 using Lesson5.Service;
@@ -13,8 +14,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<PilotService>();
 builder.Services.AddScoped<FlightService>();
-builder.Services.AddScoped<PilotRepository>();
-builder.Services.AddScoped<FlightRepository>();
+builder.Services.AddScoped<IPilotRepository,PilotRepository>();
+builder.Services.AddScoped<IFlightRepository,FlightRepository>();
 builder.Services.AddDbContext<DataContext>();
 
 var app = builder.Build();

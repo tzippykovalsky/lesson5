@@ -1,14 +1,15 @@
 ﻿using Lesson5.Core.Entities;
+using Lesson5.Core.Repositories;
 using Lesson5.Data.Repositories;
 
 namespace Lesson5.Service
 {
     public class FlightService
     {
-        private readonly FlightRepository _flightRepository;
-        private readonly PilotRepository _pilotRepository;
+        private readonly IFlightRepository _flightRepository;
+        private readonly IPilotRepository _pilotRepository;
 
-        public FlightService(FlightRepository flightRepository, PilotRepository pilotRepository)
+        public FlightService(IFlightRepository flightRepository, IPilotRepository pilotRepository)
         {
             _flightRepository = flightRepository;
             _pilotRepository = pilotRepository;
@@ -16,12 +17,12 @@ namespace Lesson5.Service
 
         public List<Flight> GetFlights()
         {
-            return _flightRepository.GetFlights();
+            return _flightRepository.GetAll();
         }
 
         public Flight? GetFlightById(int id)
         {
-            return _flightRepository.GetFlightById(id);
+            return _flightRepository.GetById(id);
         }
 
         public void AddFlight(Flight flight)
@@ -37,12 +38,12 @@ namespace Lesson5.Service
                 throw new ArgumentException("מספר שעות חייב להיות בין 1 ל-24.");
 
             // בדיקה שהטייס קיים
-            var pilot = _pilotRepository.GetPilotById(flight.PilotId);
+            var pilot = _pilotRepository.GetById(flight.PilotId);
             if (pilot == null)
                 throw new InvalidOperationException("טייס לא קיים במערכת.");
 
             // לא לאפשר טיסה כפולה באותו שער, יעד וטייס
-            var existingFlights = _flightRepository.GetFlights();
+            var existingFlights = _flightRepository.GetAll();
             bool conflict = existingFlights.Any(f =>
                 f.Gate == flight.Gate &&
                 f.Destination == flight.Destination &&
@@ -51,18 +52,18 @@ namespace Lesson5.Service
             if (conflict)
                 throw new InvalidOperationException("כבר קיימת טיסה דומה במערכת עם אותו טייס, יעד ושער.");
 
-            _flightRepository.AddFlight(flight);
+            _flightRepository.Add(flight);
         }
 
         public void RemoveFlight(int id)
         {
-            _flightRepository.RemoveFlight(id);
+            _flightRepository.Delete(id);
         }
 
         public void UpdateFlight(Flight flight)
         {
             // אפשר להוסיף לוגיקות גם כאן כמו בבדיקה של Add
-            _flightRepository.UpdateFlight(flight);
+            _flightRepository.Update(flight);
         }
 
         public void UpdateFlight(Flight flight, int id)
@@ -88,7 +89,7 @@ namespace Lesson5.Service
                 existing.Terminal = flight.Terminal;
 
 
-            _flightRepository.UpdateFlight(existing);
+            _flightRepository.Update(existing);
         }
     }
 }
