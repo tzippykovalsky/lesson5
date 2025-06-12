@@ -11,6 +11,6 @@ namespace Lesson5.Core.Repositories
     {
         public IRepository<Passenger> PassengerRepository { get; set; }
         public IRepository<Pilot> PilotRepository { get; set; }
-        public IRepository<Flight> FlightRepository { get; set; }
+        public IFlightRepository FlightRepository { get; set; }
     }
 }

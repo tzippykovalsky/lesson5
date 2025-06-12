@@ -1,51 +1,69 @@
-﻿//using Lesson5.Core.Entities;
-//using Lesson5.Core.Repositories;
+﻿using Lesson5.Core.Entities;
+using Lesson5.Core.Repositories;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
 
-//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
+namespace Lesson5.Data.Repositories
+{
+    public class FlightRepository : Repository<Flight>, IFlightRepository
+    {
 
+        public FlightRepository(DataContext context) : base(context)
+        {
+        
+        }
 
-//namespace Lesson5.Data.Repositories
-//{
-//    //בדף זה נגדיר את כל הפעולות שנרצה לבצע על ה  dbset של טיסות
-//    public class FlightRepository : IFlightRepository
-//    {
-//        private readonly DataContext _dataContext;
-//        public FlightRepository(DataContext dataContext)
-//        {
-//            _dataContext = dataContext;
-//        }
+        public void AddPassengerToFlight(int flightId, Passenger passenger)
+        {
+            var flight = _dbSet
+                .Include(f => f.Passengers)
+                .FirstOrDefault(f => f.Id == flightId);
 
-//        public List<Flight> GetAll()
-//        {
-//            return _dataContext.Flights.ToList();
-//        }
+            if (flight != null && !flight.Passengers.Any(p => p.Id == passenger.Id))
+            {
+                flight.Passengers.Add(passenger);
+                _context.SaveChanges();
+            }
+        }
 
-//        public Flight? GetById(int id)
-//        {
-//            return _dataContext.Flights.FirstOrDefault(f => f.Id == id);
-//        }
+        public void RemovePassengerFromFlight(int flightId, int passengerId)
+        {
+            var flight = _dbSet
+                .Include(f => f.Passengers)
+                .FirstOrDefault(f => f.Id == flightId);
 
-//        public void Add(Flight flight)
-//        {
-//            _dataContext.Flights.Add(flight);
-//            _dataContext.SaveChanges();
-//        }
+            var passenger = flight?.Passengers.FirstOrDefault(p => p.Id == passengerId);
 
-//        public void Delete(int id)
-//        {
-//            var f=GetById(id);
-//            _dataContext.Remove(f);//
-//            _dataContext.SaveChanges();
-//        }
-//        public void Update(Flight flight)
-//        {
-//            //var f = GetFlightById(flight.Id);
-//            _dataContext.Update(flight);
-//            _dataContext.SaveChanges();
-//        }
-//    }
-//}
+            if (flight != null && passenger != null)
+            {
+                flight.Passengers.Remove(passenger);
+                _context.SaveChanges();
+            }
+        }
+
+        public List<Passenger> GetPassengersInFlight(int flightId)
+        {
+            var flight = _dbSet
+                .Include(f => f.Passengers)
+                .FirstOrDefault(f => f.Id == flightId);
+
+            return flight?.Passengers.ToList() ?? new List<Passenger>();
+        }
+
+        public List<Flight> GetFlightsByDestination(string destination)
+        {
+            return _dbSet
+                .Where(f => f.Destination == destination)
+                .ToList();
+        }
+
+        public List<Flight> GetFlightsByPilotId(int pilotId)
+        {
+            return _dbSet
+                .Where(f => f.PilotId == pilotId)
+                .ToList();
+        }
+
+    }
+}

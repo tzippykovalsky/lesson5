@@ -12,8 +12,8 @@ namespace Lesson5.Data.Repositories
     {
         public IRepository<Passenger> PassengerRepository { get; set; }
         public IRepository<Pilot> PilotRepository { get; set; }
-        public IRepository<Flight> FlightRepository { get; set; }
-        public Manager(IRepository<Passenger> passengerRepository, IRepository<Pilot> pilotRepository, IRepository<Flight> flightRepository)
+        public IFlightRepository FlightRepository { get; set; }
+        public Manager(IRepository<Passenger> passengerRepository, IRepository<Pilot> pilotRepository, IFlightRepository flightRepository)
         {
             PassengerRepository = passengerRepository;
             PilotRepository = pilotRepository;

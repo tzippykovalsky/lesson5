@@ -84,5 +84,30 @@ namespace Lesson5.Service
 
             Manager.FlightRepository.Update(existing);
         }
+        public void AddPassengerToFlight(int flightId, Passenger passenger)
+        {
+            Manager.FlightRepository.AddPassengerToFlight(flightId, passenger);
+        }
+
+        public void RemovePassengerFromFlight(int flightId, int passengerId)
+        {
+            Manager.FlightRepository.RemovePassengerFromFlight(flightId, passengerId);
+        }
+
+        public List<Passenger> GetPassengersInFlight(int flightId)
+        {
+            return Manager.FlightRepository.GetPassengersInFlight(flightId);
+        }
+
+        public List<Flight> GetFlightsByDestination(string destination)
+        {
+            return Manager.FlightRepository.GetFlightsByDestination(destination);
+        }
+
+        public List<Flight> GetFlightsByPilotId(int pilotId)
+        {
+            return Manager.FlightRepository.GetFlightsByPilotId(pilotId);
+        }
+
     }
 }
