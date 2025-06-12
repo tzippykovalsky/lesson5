@@ -1,4 +1,5 @@
-﻿using Lesson5.Core.Entities;
+﻿using Lesson5.Core.Dto;
+using Lesson5.Core.Entities;
 using Lesson5.Service;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -19,7 +20,7 @@ namespace Lesson5.Api.Controllers
 
         // GET: api/Passenger
         [HttpGet]
-        public ActionResult<List<Passenger>> Get()
+        public ActionResult<List<PassengerWithFlightsDto>> Get()
         {
             try
             {
@@ -42,7 +43,7 @@ namespace Lesson5.Api.Controllers
 
         // GET: api/Passenger/5
         [HttpGet("{id}")]
-        public ActionResult<Passenger?> Get(int id)
+        public ActionResult<PassengerWithFlightsDto?> Get(int id)
         {
             try
             {
@@ -68,7 +69,7 @@ namespace Lesson5.Api.Controllers
 
         // POST: api/Passenger
         [HttpPost]
-        public IActionResult Post([FromBody] Passenger passenger)
+        public IActionResult Post([FromBody] PostPassengerDto passenger)
         {
             try
             {
@@ -91,7 +92,7 @@ namespace Lesson5.Api.Controllers
 
         // PUT: api/Passenger/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] Passenger passenger)
+        public IActionResult Put(int id, [FromBody] PostPassengerDto passenger)
         {
             try
             {
