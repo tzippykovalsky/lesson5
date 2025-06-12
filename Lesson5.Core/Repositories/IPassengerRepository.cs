@@ -7,7 +7,10 @@ using System.Threading.Tasks;
 
 namespace Lesson5.Core.Repositories
 {
-    public interface IPassengerRepository:IRepository<Passenger>
+    public interface IPassengerRepository : IRepository<Passenger>
     {
+        List<Flight> GetFlightsForPassenger(int passengerId);
+        bool IsPassengerInFlight(int passengerId, int flightId);
     }
+
 }

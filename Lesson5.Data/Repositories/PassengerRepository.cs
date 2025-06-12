@@ -1,6 +1,6 @@
 ﻿using Lesson5.Core.Entities;
 using Lesson5.Core.Repositories;
-
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,41 +10,29 @@ using System.Threading.Tasks;
 
 namespace Lesson5.Data.Repositories
 {
-    public class PassengerRepository : IPassengerRepository
+    public class PassengerRepository :Repository<Passenger>, IPassengerRepository
     {
-        private readonly DataContext _dataContext;
-        public PassengerRepository(DataContext dataContext)
+       
+        public PassengerRepository(DataContext dataContext):base(dataContext)
         {
-            _dataContext = dataContext;
+           
+        }
+        public List<Flight> GetFlightsForPassenger(int passengerId)
+        {
+            var passenger = _dbSet
+                .Include(p => p.Flights)
+                .FirstOrDefault(p => p.Id == passengerId);
+
+            return passenger?.Flights ?? new List<Flight>();
         }
 
-        public List<Passenger> GetAll()
+        public bool IsPassengerInFlight(int passengerId, int flightId)
         {
-            return _dataContext.Passes.ToList();
-        }
+            var passenger = _dbSet
+                .Include(p => p.Flights)
+                .FirstOrDefault(p => p.Id == passengerId);
 
-        public Passenger? GetById(int id)
-        {
-            return _dataContext.Passes.FirstOrDefault(f => f.Id == id);
-        }
-
-        public void Add(Passenger passenger)
-        {
-            _dataContext.Passes.Add(passenger);
-            _dataContext.SaveChanges();
-        }
-
-        public void Delete(int id)
-        {
-            var f=GetById(id);
-            _dataContext.Remove(f);//
-            _dataContext.SaveChanges();
-        }
-        public void Update(Passenger passenger)
-        {
-            //var f = GetFlightById(flight.Id);
-            _dataContext.Update(passenger);
-            _dataContext.SaveChanges();
+            return passenger?.Flights.Any(f => f.Id == flightId) == true;
         }
     }
 }
