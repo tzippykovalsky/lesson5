@@ -9,23 +9,19 @@ using System.Threading.Tasks;
 
 namespace Lesson5.Service
 {
-    public class PilotService
+    public class PilotService(IManager manager)
     //שכבה זו תכלול לוגיקה עסקית שכוללת אימות נתונים ובדיקות שונות
     {
-        private readonly IPilotRepository _pilotRepository;
-
-        public PilotService(IPilotRepository pilotRepository)
-        {
-            _pilotRepository = pilotRepository;
-        }
+      
+        private readonly IManager managerRepository = manager;
 
         public List<Pilot> GetPilots()
         {
-            return _pilotRepository.GetAll();
+            return manager.PilotRepository.GetAll();
         }
         public Pilot? GetPilotById(int id)
         {
-            return _pilotRepository.GetById(id);
+            return manager.PilotRepository.GetById(id);
         }
         public void AddPilot(Pilot pilot)
         {
@@ -37,19 +33,19 @@ namespace Lesson5.Service
                 throw new ArgumentException("Pilot age must be between 18 and 70.");
 
             // בדיקה אם הטייס כבר קיים לפי ת"ז
-            if (_pilotRepository.GetAll().FirstOrDefault(p=>p.IdentityNumber.Equals(pilot.IdentityNumber))!=null)
+            if (manager.PilotRepository.GetAll().FirstOrDefault(p=>p.IdentityNumber.Equals(pilot.IdentityNumber))!=null)
                 throw new InvalidOperationException("Pilot with the same identity number already exists.");
 
             // אם הכל תקין - מוסיפים
-            _pilotRepository.Add(pilot);
+            manager.PilotRepository.Add(pilot);
         }
         public void RemovePilot(int id)
         {
-            var existing = _pilotRepository.GetById(id);
+            var existing = manager.PilotRepository.GetById(id);
             if (existing == null)
                 throw new KeyNotFoundException($"Pilot with ID {id} not found.");
 
-            _pilotRepository.Delete(id);
+            manager.PilotRepository.Delete(id);
         }
         public void UpdatePilot(Pilot pilot,int id)
         {
@@ -73,7 +69,7 @@ namespace Lesson5.Service
 
             // כאן לא נגע ב-Flights כדי לא למחוק אותם במקרה שלא נשלחו
 
-            _pilotRepository.Update(existing); // הרפוזיטורי שומר את השינויים
+            manager.PilotRepository.Update(existing); // הרפוזיטורי שומר את השינויים
         }
 
     }

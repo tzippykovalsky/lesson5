@@ -4,25 +4,18 @@ using Lesson5.Data.Repositories;
 
 namespace Lesson5.Service
 {
-    public class FlightService
+    public class FlightService(IManager manager)
     {
-        private readonly IFlightRepository _flightRepository;
-        private readonly IPilotRepository _pilotRepository;
-
-        public FlightService(IFlightRepository flightRepository, IPilotRepository pilotRepository)
-        {
-            _flightRepository = flightRepository;
-            _pilotRepository = pilotRepository;
-        }
-
+        public readonly IManager Manager=manager;
+       
         public List<Flight> GetFlights()
         {
-            return _flightRepository.GetAll();
+            return Manager.FlightRepository.GetAll();
         }
 
         public Flight? GetFlightById(int id)
         {
-            return _flightRepository.GetById(id);
+            return Manager.FlightRepository.GetById(id);
         }
 
         public void AddFlight(Flight flight)
@@ -38,12 +31,12 @@ namespace Lesson5.Service
                 throw new ArgumentException("מספר שעות חייב להיות בין 1 ל-24.");
 
             // בדיקה שהטייס קיים
-            var pilot = _pilotRepository.GetById(flight.PilotId);
+            var pilot = Manager.PilotRepository.GetById(flight.PilotId);
             if (pilot == null)
                 throw new InvalidOperationException("טייס לא קיים במערכת.");
 
             // לא לאפשר טיסה כפולה באותו שער, יעד וטייס
-            var existingFlights = _flightRepository.GetAll();
+            var existingFlights = Manager.FlightRepository.GetAll();
             bool conflict = existingFlights.Any(f =>
                 f.Gate == flight.Gate &&
                 f.Destination == flight.Destination &&
@@ -52,18 +45,18 @@ namespace Lesson5.Service
             if (conflict)
                 throw new InvalidOperationException("כבר קיימת טיסה דומה במערכת עם אותו טייס, יעד ושער.");
 
-            _flightRepository.Add(flight);
+            Manager.FlightRepository.Add(flight);
         }
 
         public void RemoveFlight(int id)
         {
-            _flightRepository.Delete(id);
+            Manager.FlightRepository.Delete(id);
         }
 
         public void UpdateFlight(Flight flight)
         {
             // אפשר להוסיף לוגיקות גם כאן כמו בבדיקה של Add
-            _flightRepository.Update(flight);
+            Manager.FlightRepository.Update(flight);
         }
 
         public void UpdateFlight(Flight flight, int id)
@@ -89,7 +82,7 @@ namespace Lesson5.Service
                 existing.Terminal = flight.Terminal;
 
 
-            _flightRepository.Update(existing);
+            Manager.FlightRepository.Update(existing);
         }
     }
 }

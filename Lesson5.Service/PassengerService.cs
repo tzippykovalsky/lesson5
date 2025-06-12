@@ -10,16 +10,16 @@ using System.Threading.Tasks;
 
 namespace Lesson5.Service
 {
-    public class PassengerService(IMapper mapper, IPassengerRepository passengerRepository)
+    public class PassengerService(IMapper mapper, IManager manager)
     {
-        private readonly IPassengerRepository _passengerRepository=passengerRepository;
+        private readonly IManager managerRepository=manager;
         private readonly IMapper _mapper = mapper;
 
 
 
         public List<PassengerWithFlightsDto> GetPassengers()
         {
-            List<Passenger> listToConvert = _passengerRepository.GetAll();
+            List<Passenger> listToConvert = managerRepository.PassengerRepository.GetAll();
 
             // שימוש ב־AutoMapper להמרת כל הרשימה
             return _mapper.Map<List<PassengerWithFlightsDto>>(listToConvert);
@@ -28,7 +28,7 @@ namespace Lesson5.Service
 
         public PassengerWithFlightsDto? GetPassengerById(int id)
         {
-            return _mapper.Map<PassengerWithFlightsDto>(_passengerRepository.GetById(id));
+            return _mapper.Map<PassengerWithFlightsDto>(managerRepository.PassengerRepository.GetById(id));
         }
 
         public void AddPassenger(PostPassengerDto passengerDto)
@@ -41,7 +41,7 @@ namespace Lesson5.Service
                 throw new ArgumentException("Passport number is required.");
 
             // בדיקה אם קיים נוסע עם אותו מספר דרכון
-            var existing = _passengerRepository.GetAll()
+            var existing = managerRepository.PassengerRepository.GetAll()
                                 .FirstOrDefault(p => p.PassportNumber == passengerDto.PassportNumber);
             if (existing != null)
                 throw new InvalidOperationException("Passenger with the same passport number already exists.");
@@ -49,21 +49,21 @@ namespace Lesson5.Service
 
             // המרה מ־DTO ל־Entity
             Passenger passenger = _mapper.Map<Passenger>(passengerDto);
-            _passengerRepository.Add(passenger);
+            managerRepository.PassengerRepository.Add(passenger);
         }
 
         public void RemovePassenger(int id)
         {
-            var existing = _passengerRepository.GetById(id);
+            var existing = managerRepository.PassengerRepository.GetById(id);
             if (existing == null)
                 throw new KeyNotFoundException($"Passenger with ID {id} not found.");
 
-            _passengerRepository.Delete(id);
+            managerRepository.PassengerRepository.Delete(id);
         }
 
         public void UpdatePassenger(PostPassengerDto passenger, int id)
         {
-            var existing = _passengerRepository.GetById(id);
+            var existing = managerRepository.PassengerRepository.GetById(id);
             if (existing == null)
                 throw new KeyNotFoundException($"Passenger with ID {id} not found.");
 
@@ -80,7 +80,7 @@ namespace Lesson5.Service
 
             // כאן לא נוגעים ב-Flights כדי לשמור על הקשרים הקיימים
 
-            _passengerRepository.Update(existing);
+            managerRepository.PassengerRepository.Update(existing);
         }
     }
 }
