@@ -15,6 +15,7 @@ namespace Lesson5.Api.Extensions
             services.AddScoped<IPilotRepository, PilotRepository>();
             services.AddScoped<IFlightRepository, FlightRepository>();
             services.AddScoped<IPassengerRepository, PassengerRepository>();
+            services.AddAutoMapper(typeof(MyAutoMapper));
 
             services.AddDbContext<DataContext>();
         }

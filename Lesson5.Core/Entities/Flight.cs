@@ -11,6 +11,8 @@ namespace Lesson5.Core.Entities
         //כאן ניצור מחלקה שמתארת טיסה
         //כאשר נשתמש ב EF
         //הטבלאות יווצרו ע"פ המבנה הבא
+        //המחלקות בתקיית הEntities מייצגות את המבנה האמיתי של הפרויקט
+        //כלומר איך זה ממש שמור בdata ומהם הקשרים בין המחלקות
         public int Id { get; set; }
         public int Price { get; set; }
         public int Terminal { get; set; }
