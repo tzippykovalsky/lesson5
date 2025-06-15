@@ -8,10 +8,10 @@
         //הפונקציה מקבלת את אובייקט הבקשה
         public async Task InvokeAsync(HttpContext context)
         {
-            if (DateTime.Now.DayOfWeek == DayOfWeek.Sunday)
+            if (DateTime.Now.DayOfWeek == DayOfWeek.Saturday)
             {
                 context.Response.StatusCode = StatusCodes.Status403Forbidden;
-                await context.Response.WriteAsync("האתר שומר שבת- ואינו נותן יד למחלליה");
+                await context.Response.WriteAsync("The website observes the Sabbath – and does not support its desecration.");
                 return;
             }
             await _next(context);
