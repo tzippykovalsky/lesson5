@@ -23,7 +23,7 @@ namespace Lesson5.Data.Repositories
             if (flight != null && !flight.Passengers.Any(p => p.Id == passenger.Id))
             {
                 flight.Passengers.Add(passenger);
-                _context.SaveChanges();
+               // _context.SaveChanges();
             }
         }
 
@@ -38,7 +38,7 @@ namespace Lesson5.Data.Repositories
             if (flight != null && passenger != null)
             {
                 flight.Passengers.Remove(passenger);
-                _context.SaveChanges();
+                //_context.SaveChanges();
             }
         }
 
@@ -50,7 +50,6 @@ namespace Lesson5.Data.Repositories
 
             return flight?.Passengers.ToList() ?? new List<Passenger>();
         }
-
         public List<Flight> GetFlightsByDestination(string destination)
         {
             return _dbSet

@@ -3,7 +3,8 @@ using Lesson5.Core.Repositories;
 using Lesson5.Data;
 using Lesson5.Data.Repositories;
 using Lesson5.Service;
-using Lesson5.Api.Extensions;
+using Lesson5.Api.MyExtensions;
+using Lesson5.Api.Middlewares;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,8 +21,8 @@ builder.Services.AddSwaggerGen();
 //builder.Services.AddScoped<IPilotRepository,PilotRepository>();
 //builder.Services.AddScoped<IFlightRepository,FlightRepository>();
 //builder.Services.AddScoped<IPassengerRepository, PassengerRepository>();
-
 //builder.Services.AddDbContext<DataContext>();
+
 builder.Services.setService();
 var app = builder.Build();
 
@@ -35,7 +36,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-
+app.UseShabbatMiddleware();
 app.MapControllers();
 
 app.Run();

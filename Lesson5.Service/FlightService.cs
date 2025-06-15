@@ -1,13 +1,16 @@
-﻿using Lesson5.Core.Entities;
+﻿using AutoMapper;
+using Lesson5.Core.Dto;
+using Lesson5.Core.Entities;
 using Lesson5.Core.Repositories;
 using Lesson5.Data.Repositories;
 
 namespace Lesson5.Service
 {
-    public class FlightService(IManager manager)
+    public class FlightService(IManager manager, IMapper mapper)
     {
         public readonly IManager Manager=manager;
-       
+        private readonly IMapper _mapper;
+
         public List<Flight> GetFlights()
         {
             return Manager.FlightRepository.GetAll();
@@ -18,7 +21,7 @@ namespace Lesson5.Service
             return Manager.FlightRepository.GetById(id);
         }
 
-        public void AddFlight(Flight flight)
+        public async Task AddFlight(Flight flight)
         {
             if (flight.Price <= 0)
                 throw new ArgumentException("מחיר הטיסה חייב להיות מספר חיובי.");
@@ -46,17 +49,20 @@ namespace Lesson5.Service
                 throw new InvalidOperationException("כבר קיימת טיסה דומה במערכת עם אותו טייס, יעד ושער.");
 
             Manager.FlightRepository.Add(flight);
+            await Manager.Save();
         }
 
         public void RemoveFlight(int id)
         {
             Manager.FlightRepository.Delete(id);
+            Manager.Save();
         }
 
         public void UpdateFlight(Flight flight)
         {
             // אפשר להוסיף לוגיקות גם כאן כמו בבדיקה של Add
             Manager.FlightRepository.Update(flight);
+            Manager.Save();
         }
 
         public void UpdateFlight(Flight flight, int id)
@@ -83,22 +89,25 @@ namespace Lesson5.Service
 
 
             Manager.FlightRepository.Update(existing);
+            Manager.Save();
         }
         public void AddPassengerToFlight(int flightId, Passenger passenger)
         {
             Manager.FlightRepository.AddPassengerToFlight(flightId, passenger);
+            Manager.Save();
         }
 
-        public void RemovePassengerFromFlight(int flightId, int passengerId)
+        public async void RemovePassengerFromFlight(int flightId, int passengerId)
         {
             Manager.FlightRepository.RemovePassengerFromFlight(flightId, passengerId);
+            Manager.Save();
         }
 
-        public List<Passenger> GetPassengersInFlight(int flightId)
+        public List<PostPassengerDto> GetPassengersInFlight(int flightId)
         {
-            return Manager.FlightRepository.GetPassengersInFlight(flightId);
+            var passengers = Manager.FlightRepository.GetPassengersInFlight(flightId);
+            return _mapper.Map<List<PostPassengerDto>>(passengers);
         }
-
         public List<Flight> GetFlightsByDestination(string destination)
         {
             return Manager.FlightRepository.GetFlightsByDestination(destination);

@@ -2,6 +2,7 @@
 using Lesson5.Core.Dto;
 using Lesson5.Core.Entities;
 using Lesson5.Core.Repositories;
+using Lesson5.Data.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,6 +51,7 @@ namespace Lesson5.Service
             // המרה מ־DTO ל־Entity
             Passenger passenger = _mapper.Map<Passenger>(passengerDto);
             managerRepository.PassengerRepository.Add(passenger);
+            managerRepository.Save();
         }
 
         public void RemovePassenger(int id)
@@ -59,6 +61,7 @@ namespace Lesson5.Service
                 throw new KeyNotFoundException($"Passenger with ID {id} not found.");
 
             managerRepository.PassengerRepository.Delete(id);
+            managerRepository.Save();
         }
 
         public void UpdatePassenger(PostPassengerDto passenger, int id)
@@ -81,6 +84,7 @@ namespace Lesson5.Service
             // כאן לא נוגעים ב-Flights כדי לשמור על הקשרים הקיימים
 
             managerRepository.PassengerRepository.Update(existing);
+            managerRepository.Save();
         }
     }
 }

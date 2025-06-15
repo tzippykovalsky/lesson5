@@ -30,12 +30,12 @@ namespace Lesson5.Data.Repositories
         public void Add(T entity)
         {
             _dbSet.Add(entity);
-            _context.SaveChanges();
+            //_context.SaveChanges();
         }
         public void Update(T entity)
         {
             _dbSet.Update(entity);
-            _context.SaveChanges();
+            //_context.SaveChanges();
         }
         public void Delete(int id)
         {
@@ -43,7 +43,7 @@ namespace Lesson5.Data.Repositories
             if (entity is not null)
             {
                 _dbSet.Remove(entity);
-                _context.SaveChanges();
+               // _context.SaveChanges();
             }
         }
     }

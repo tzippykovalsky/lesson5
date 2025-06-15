@@ -3,7 +3,9 @@ using Lesson5.Data.Repositories;
 using Lesson5.Data;
 using Lesson5.Service;
 
-namespace Lesson5.Api.Extensions
+
+
+namespace Lesson5.Api.MyExtensions
 {
     public static class ServicesExtension
     {
@@ -12,10 +14,14 @@ namespace Lesson5.Api.Extensions
             services.AddScoped<PilotService>();
             services.AddScoped<FlightService>();
             services.AddScoped<PassengerService>();
-            services.AddScoped<IPilotRepository, PilotRepository>();
+
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IFlightRepository, FlightRepository>();
             services.AddScoped<IPassengerRepository, PassengerRepository>();
-            services.AddAutoMapper(typeof(MyAutoMapper));
+
+            services.AddScoped<IManager, Manager>();
+
+            services.AddAutoMapper(typeof(MyAutoMapper).Assembly);
 
             services.AddDbContext<DataContext>();
         }

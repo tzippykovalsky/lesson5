@@ -1,4 +1,5 @@
-﻿using Lesson5.Core.Entities;
+﻿using Lesson5.Core.Dto;
+using Lesson5.Core.Entities;
 using Lesson5.Service;
 using Microsoft.AspNetCore.Mvc;
 //I want you to act as a c# developer
@@ -21,7 +22,7 @@ namespace Lesson5.Api.Controllers
         private readonly FlightService _flightService;
         public FlightController(FlightService flightService)
         {
-           _flightService = flightService;
+            _flightService = flightService;
         }
 
         // GET: api/<FlightController>
@@ -41,7 +42,7 @@ namespace Lesson5.Api.Controllers
             catch (ArgumentException ex)
             {
                 return BadRequest(ex.Message);
-                
+
             }
             catch (Exception ex)
             {
@@ -87,11 +88,11 @@ namespace Lesson5.Api.Controllers
 
         // POST api/<FlightController>
         [HttpPost]
-        public IActionResult Post([FromBody] Flight value)
+        public async Task<IActionResult> Post([FromBody] Flight value)
         {
             try
             {
-                _flightService.AddFlight(value);
+                await _flightService.AddFlight(value);
                 // Assuming value.Id is set after add
                 return Created($"api/Flight/{value.Id}", value);
             }
@@ -154,5 +155,89 @@ namespace Lesson5.Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        // GET: api/Flight/by-destination/{destination}
+        [HttpGet("by-destination/{destination}")]
+        public ActionResult<List<Flight>> GetFlightsByDestination(string destination)
+        {
+            try
+            {
+                var flights = _flightService.GetFlightsByDestination(destination);
+                return Ok(flights);
+            }
+            catch (Exception ex)
+            {
+                return HandleException(ex);
+            }
+        }
+
+        // GET: api/Flight/by-pilot/{pilotId}
+        [HttpGet("by-pilot/{pilotId}")]
+        public ActionResult<List<Flight>> GetFlightsByPilotId(int pilotId)
+        {
+            try
+            {
+                var flights = _flightService.GetFlightsByPilotId(pilotId);
+                return Ok(flights);
+            }
+            catch (Exception ex)
+            {
+                return HandleException(ex);
+            }
+        }
+
+        // GET: api/Flight/{flightId}/passengers
+        [HttpGet("{flightId}/passengers")]
+        public ActionResult<List<PostPassengerDto>> GetPassengersInFlight(int flightId)
+        {
+            try
+            {
+                var passengers = _flightService.GetPassengersInFlight(flightId);
+                return Ok(passengers);
+            }
+            catch (Exception ex)
+            {
+                return HandleException(ex);
+            }
+        }
+
+        // POST: api/Flight/{flightId}/add-passenger
+        [HttpPost("{flightId}/add-passenger")]
+        public IActionResult AddPassengerToFlight(int flightId, [FromBody] Passenger passenger)
+        {
+            try
+            {
+                _flightService.AddPassengerToFlight(flightId, passenger);
+                return Ok($"Passenger added to flight {flightId}");
+            }
+            catch (Exception ex)
+            {
+                return HandleException(ex);
+            }
+        }
+
+        // DELETE: api/Flight/{flightId}/remove-passenger/{passengerId}
+        [HttpDelete("{flightId}/remove-passenger/{passengerId}")]
+        public IActionResult RemovePassengerFromFlight(int flightId, int passengerId)
+        {
+            try
+            {
+                _flightService.RemovePassengerFromFlight(flightId, passengerId);
+                return Ok($"Passenger {passengerId} removed from flight {flightId}");
+            }
+            catch (Exception ex)
+            {
+                return HandleException(ex);
+            }
+        }
+        private ActionResult HandleException(Exception ex)
+        {
+            return ex switch
+            {
+                ArgumentNullException => NotFound(ex.Message),
+                ArgumentException => BadRequest(ex.Message),
+                _ => StatusCode(500, "An unexpected error occurred: " + ex.Message)
+            };
+        }
+
     }
 }

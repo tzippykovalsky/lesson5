@@ -1,15 +1,16 @@
 ﻿using Lesson5.Core.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace Lesson5.Data
 {
-    public class DataContext : DbContext
+    public class DataContext(IConfiguration configuration) : DbContext
     {
+        private readonly IConfiguration _configuration = configuration;
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Lesson5_DB")
-                .LogTo(Console.WriteLine, LogLevel.Information);
+            optionsBuilder.UseSqlServer(_configuration["ConnectionStrings:DefaultConnection"]).LogTo(Console.WriteLine, LogLevel.Information);
             //הוספת הדפסה בכל שאילתה-
             //מדפיס את משפט ה sql שקרה מאחורי הקלעים
 

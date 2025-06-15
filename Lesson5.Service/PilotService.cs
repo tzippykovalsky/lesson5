@@ -38,6 +38,7 @@ namespace Lesson5.Service
 
             // אם הכל תקין - מוסיפים
             manager.PilotRepository.Add(pilot);
+            manager.Save();
         }
         public void RemovePilot(int id)
         {
@@ -46,6 +47,7 @@ namespace Lesson5.Service
                 throw new KeyNotFoundException($"Pilot with ID {id} not found.");
 
             manager.PilotRepository.Delete(id);
+            manager.Save();
         }
         public void UpdatePilot(Pilot pilot,int id)
         {
@@ -70,6 +72,7 @@ namespace Lesson5.Service
             // כאן לא נגע ב-Flights כדי לא למחוק אותם במקרה שלא נשלחו
 
             manager.PilotRepository.Update(existing); // הרפוזיטורי שומר את השינויים
+            manager.Save();
         }
 
     }
